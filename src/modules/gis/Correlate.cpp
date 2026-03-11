@@ -169,6 +169,29 @@ public:
             }
         }
 
+        // Build scatter chart of pixel pairs with R value in title
+        ChartResult chart;
+        chart.type = ChartResult::Scatter;
+        chart.title = QString("Correlation Scatter (R = %1)").arg(r, 0, 'f', 4);
+        chart.xLabel = "Input 1";
+        chart.yLabel = "Input 2";
+        ChartSeries s;
+        s.label = "Pixel Pairs";
+        // Sample up to 10000 points for the chart to avoid excessive memory use
+        int64_t chartMax = 10000;
+        int64_t step_chart = (N > chartMax) ? (total / chartMax) : 1;
+        if (step_chart < 1) step_chart = 1;
+        for (int64_t i = 0; i < total; ++i) {
+            if (hasND1 && d1[i] == noData1) continue;
+            if (hasND2 && d2[i] == noData2) continue;
+            if (i % step_chart == 0) {
+                s.x.push_back(d1[i]);
+                s.y.push_back(d2[i]);
+            }
+        }
+        chart.series.push_back(s);
+        setChartResult(chart);
+
         reportProgress(1.0,
             QString("Pearson r = %1, R² = %2, p = %3")
                 .arg(r, 0, 'f', 6)

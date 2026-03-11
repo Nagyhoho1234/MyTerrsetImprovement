@@ -3,6 +3,8 @@
 #include "GdalIO.h"
 #include <cmath>
 #include <vector>
+#include <algorithm>
+#include <limits>
 #include <QFile>
 #include <QTextStream>
 
@@ -103,6 +105,51 @@ public:
         double correlation = 0.0;
         if (denomProduct > 0.0) {
             correlation = numerator / std::sqrt(denomProduct);
+        }
+
+        // Build histogram chart of per-pixel magnitude differences
+        {
+            const int numBins = 100;
+            // First pass: find min/max difference
+            double diffMin = std::numeric_limits<double>::max();
+            double diffMax = std::numeric_limits<double>::lowest();
+            for (int64_t i = 0; i < total; ++i) {
+                double v1 = data1[i], v2 = data2[i];
+                if (hasND1 && v1 == nd1) continue;
+                if (hasND2 && v2 == nd2) continue;
+                double d = v1 - v2;
+                if (d < diffMin) diffMin = d;
+                if (d > diffMax) diffMax = d;
+            }
+
+            double binWidth = (diffMax - diffMin) / numBins;
+            if (binWidth <= 0.0) binWidth = 1.0;
+
+            std::vector<double> hist(numBins, 0.0);
+            for (int64_t i = 0; i < total; ++i) {
+                double v1 = data1[i], v2 = data2[i];
+                if (hasND1 && v1 == nd1) continue;
+                if (hasND2 && v2 == nd2) continue;
+                int bin = static_cast<int>((v1 - v2 - diffMin) / binWidth);
+                bin = std::clamp(bin, 0, numBins - 1);
+                hist[bin]++;
+            }
+
+            ChartResult chart;
+            chart.type = ChartResult::Histogram;
+            chart.title = "Frequency Spectrum Difference Distribution";
+            chart.xLabel = "Magnitude Difference";
+            chart.yLabel = "Frequency";
+
+            ChartSeries series;
+            series.label = "Difference";
+            series.color = ChartColor(100, 100, 200);
+            for (int i = 0; i < numBins; ++i) {
+                series.x.push_back(diffMin + (i + 0.5) * binWidth);
+                series.y.push_back(hist[i]);
+            }
+            chart.series.push_back(std::move(series));
+            setChartResult(std::move(chart));
         }
 
         reportProgress(0.9, "Writing report...");

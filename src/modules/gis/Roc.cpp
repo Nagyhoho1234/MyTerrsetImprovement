@@ -154,6 +154,29 @@ public:
 
         outFile.close();
 
+        // Build ROC line chart
+        ChartResult chart;
+        chart.type = ChartResult::Line;
+        chart.title = QString("ROC Curve (AUC = %1)").arg(AUC, 0, 'f', 4);
+        chart.xLabel = "False Positive Rate";
+        chart.yLabel = "True Positive Rate";
+        ChartSeries s;
+        s.label = "ROC";
+        s.color = ChartColor(255, 0, 0);
+        for (const auto& pt : rocCurve) {
+            s.x.push_back(pt.FPR);
+            s.y.push_back(pt.TPR);
+        }
+        chart.series.push_back(s);
+        // Add diagonal reference line
+        ChartSeries diag;
+        diag.label = "Random";
+        diag.color = ChartColor(128, 128, 128);
+        diag.x = {0.0, 1.0};
+        diag.y = {0.0, 1.0};
+        chart.series.push_back(diag);
+        setChartResult(chart);
+
         reportProgress(1.0,
             QString("AUC = %1, Positives = %2, Negatives = %3")
                 .arg(AUC, 0, 'f', 6)

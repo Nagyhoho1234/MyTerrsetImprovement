@@ -150,6 +150,41 @@ public:
             }
         }
 
+        // Build scatter chart showing calibration function per band
+        {
+            ChartResult chart;
+            chart.type = ChartResult::Scatter;
+            chart.title = "Calibration Functions (DN to Radiance)";
+            chart.xLabel = "DN (Digital Number)";
+            chart.yLabel = "Calibrated Value";
+
+            std::vector<ChartColor> colors = {
+                ChartColor(31, 119, 180), ChartColor(255, 127, 14), ChartColor(44, 160, 44),
+                ChartColor(214, 39, 40), ChartColor(148, 103, 189), ChartColor(140, 86, 75),
+                ChartColor(227, 119, 194), ChartColor(127, 127, 127)
+            };
+
+            for (int b = 0; b < numBands; ++b) {
+                ChartSeries series;
+                series.label = QString("Band %1").arg(b + 1);
+                series.color = colors[b % colors.size()];
+
+                double offset = coeffs[b].offset;
+                double gain = coeffs[b].gain;
+
+                // Sample calibration line at several DN values
+                const int numSamples = 50;
+                for (int s = 0; s <= numSamples; ++s) {
+                    double dn = s * 255.0 / numSamples;
+                    series.x.push_back(dn);
+                    series.y.push_back(offset + gain * dn);
+                }
+                chart.series.push_back(std::move(series));
+            }
+
+            setChartResult(std::move(chart));
+        }
+
         reportProgress(1.0, QString("Calibration complete: %1 bands processed.").arg(numBands));
         return true;
     }

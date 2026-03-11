@@ -18,7 +18,6 @@ add_library(aplaceholder_imgproc STATIC
     Piped.cpp
     IsoClust.cpp
     VegIndex.cpp
-    Texture.cpp
     ColSpace.cpp
     Unmix.cpp
     Harden.cpp
@@ -68,6 +67,18 @@ add_library(aplaceholder_imgproc STATIC
     Mnf.cpp
     NdviComp.cpp
     Screen.cpp
+    SoilSalinity2.cpp
+    Thermal.cpp
+    SnowIndex.cpp
+    ChainCluster.cpp
+    PriorCorrect.cpp
+    Purify.cpp
+    LandsatUpsample.cpp
+    LocalAffine.cpp
+    CanComp.cpp
+    CanCor.cpp
+    Tfa.cpp
+    FiltFq.cpp
 )
 
 target_link_libraries(aplaceholder_imgproc PUBLIC

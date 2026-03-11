@@ -2,6 +2,7 @@
 #include "ModuleRegistry.h"
 #include "GdalIO.h"
 #include <cmath>
+#include <algorithm>
 
 namespace aplaceholder {
 
@@ -75,6 +76,37 @@ public:
 
             if (i % 1000000 == 0)
                 reportProgress(static_cast<double>(i) / total);
+        }
+
+        // Build NDVI histogram chart
+        {
+            const int numBins = 200; // bins spanning [-1, 1]
+            std::vector<double> hist(numBins, 0.0);
+            double binMin = -1.0, binMax = 1.0;
+            double binWidth = (binMax - binMin) / numBins;
+
+            for (int64_t i = 0; i < total; ++i) {
+                if (out[i] == noData) continue;
+                int bin = static_cast<int>((out[i] - binMin) / binWidth);
+                bin = std::clamp(bin, 0, numBins - 1);
+                hist[bin]++;
+            }
+
+            ChartResult chart;
+            chart.type = ChartResult::Histogram;
+            chart.title = "NDVI Value Distribution";
+            chart.xLabel = "NDVI";
+            chart.yLabel = "Frequency";
+
+            ChartSeries series;
+            series.label = "NDVI";
+            series.color = ChartColor(34, 139, 34); // forest green
+            for (int i = 0; i < numBins; ++i) {
+                series.x.push_back(binMin + (i + 0.5) * binWidth);
+                series.y.push_back(hist[i]);
+            }
+            chart.series.push_back(std::move(series));
+            setChartResult(std::move(chart));
         }
 
         reportProgress(1.0, "Writing output...");

@@ -158,6 +158,33 @@ public:
                 out[i] = assignment[i] + 1; // 1-based cluster IDs
         }
 
+        // Build bar chart of cluster sizes
+        {
+            // Count pixels per cluster
+            std::vector<int64_t> clusterCounts(K, 0);
+            for (int64_t i = 0; i < total; ++i) {
+                if (assignment[i] >= 0 && assignment[i] < K)
+                    clusterCounts[assignment[i]]++;
+            }
+
+            ChartResult chart;
+            chart.type = ChartResult::Bar;
+            chart.title = "Cluster Sizes";
+            chart.xLabel = "Cluster";
+            chart.yLabel = "Number of Pixels";
+
+            ChartSeries series;
+            series.label = "Pixels per Cluster";
+            series.color = ChartColor(60, 140, 200);
+            for (int k = 0; k < K; ++k) {
+                series.x.push_back(k + 1);
+                series.y.push_back(static_cast<double>(clusterCounts[k]));
+                chart.categoryLabels.push_back(QString("Cluster %1").arg(k + 1));
+            }
+            chart.series.push_back(std::move(series));
+            setChartResult(std::move(chart));
+        }
+
         reportProgress(1.0, "Writing output...");
         return GdalIO::write(output, parameter("output").toString());
     }

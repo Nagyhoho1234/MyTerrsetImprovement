@@ -253,6 +253,26 @@ public:
         report << std::string(70, '-') << "\n";
         report.close();
 
+        // Build bar chart of per-class producer's accuracy
+        {
+            ChartResult chart;
+            chart.type = ChartResult::Bar;
+            chart.title = "Per-Class Producer's Accuracy";
+            chart.xLabel = "Class";
+            chart.yLabel = "Accuracy";
+
+            ChartSeries series;
+            series.label = "Producer's Accuracy";
+            series.color = ChartColor(70, 130, 180);
+            for (int c : classList) {
+                series.x.push_back(static_cast<double>(c));
+                series.y.push_back(producerAcc[c]);
+                chart.categoryLabels.push_back(QString("Class %1").arg(c));
+            }
+            chart.series.push_back(std::move(series));
+            setChartResult(std::move(chart));
+        }
+
         QString statsMsg = QString("Accuracy assessment complete. "
                                    "Overall accuracy: %1%, Kappa: %2")
                            .arg(Po * 100.0, 0, 'f', 2)

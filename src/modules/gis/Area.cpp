@@ -86,6 +86,21 @@ public:
                        .arg(kv.second, 0, 'f', 4);
         }
 
+        // Build pie chart of category areas
+        ChartResult chart;
+        chart.type = ChartResult::Pie;
+        chart.title = "Area by Category";
+        ChartSeries s;
+        s.label = "Area";
+        for (const auto& kv : classArea) {
+            s.x.push_back(static_cast<double>(kv.first));
+            s.y.push_back(kv.second);
+            chart.categoryLabels.push_back(
+                QString("Class %1").arg(kv.first));
+        }
+        chart.series.push_back(s);
+        setChartResult(chart);
+
         reportProgress(1.0, summary + "Writing output...");
         return GdalIO::write(output, parameter("output").toString());
     }

@@ -131,6 +131,59 @@ public:
             }
         }
 
+        // Build before/after histogram chart
+        {
+            const int numBins = 256;
+            std::vector<double> beforeHist(numBins, 0.0);
+            std::vector<double> afterHist(numBins, 0.0);
+
+            // Determine bin edges for source values
+            double srcMin = *std::min_element(validVals.begin(), validVals.end());
+            double srcMax = *std::max_element(validVals.begin(), validVals.end());
+            double srcRange = srcMax - srcMin;
+
+            for (int64_t i = 0; i < total; ++i) {
+                if (hasND && src[i] == noData) continue;
+
+                // Before histogram
+                int srcBin = (srcRange > 0.0)
+                    ? static_cast<int>((src[i] - srcMin) / srcRange * (numBins - 1))
+                    : numBins / 2;
+                srcBin = std::clamp(srcBin, 0, numBins - 1);
+                beforeHist[srcBin]++;
+
+                // After histogram
+                int dstBin = std::clamp(static_cast<int>(dst[i]), 0, numBins - 1);
+                afterHist[dstBin]++;
+            }
+
+            ChartResult chart;
+            chart.type = ChartResult::Histogram;
+            chart.title = "Contrast Stretch: Before vs After";
+            chart.xLabel = "Pixel Value";
+            chart.yLabel = "Frequency";
+
+            ChartSeries beforeSeries;
+            beforeSeries.label = "Before";
+            beforeSeries.color = ChartColor(70, 130, 180); // steel blue
+            for (int i = 0; i < numBins; ++i) {
+                beforeSeries.x.push_back(srcMin + i * srcRange / (numBins - 1));
+                beforeSeries.y.push_back(beforeHist[i]);
+            }
+            chart.series.push_back(std::move(beforeSeries));
+
+            ChartSeries afterSeries;
+            afterSeries.label = "After";
+            afterSeries.color = ChartColor(220, 80, 60); // crimson
+            for (int i = 0; i < numBins; ++i) {
+                afterSeries.x.push_back(static_cast<double>(i));
+                afterSeries.y.push_back(afterHist[i]);
+            }
+            chart.series.push_back(std::move(afterSeries));
+
+            setChartResult(std::move(chart));
+        }
+
         reportProgress(1.0, "Writing output...");
         return GdalIO::write(output, parameter("output").toString());
     }

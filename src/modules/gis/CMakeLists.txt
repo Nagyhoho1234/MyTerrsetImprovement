@@ -92,6 +92,107 @@ add_library(aplaceholder_gis STATIC
     Window.cpp
     Trend.cpp
     Hillshade.cpp
+    # New context/spatial operator modules
+    Pattern.cpp
+    AreaFilter.cpp
+    Hinterland.cpp
+    PixelLocation.cpp
+    # Topographic modules
+    Aspect.cpp
+    Curvature.cpp
+    Fractal.cpp
+    Toposhape.cpp
+    Sedimentation.cpp
+    # Statistics modules
+    Count.cpp
+    Center.cpp
+    CRatio.cpp
+    KnnRegress.cpp
+    # Decision/change modules
+    MdChoice.cpp
+    PCorBinary.cpp
+    StChoice.cpp
+    Disaggregate.cpp
+    CellAtom.cpp
+    GeoMod.cpp
+    KendallTau.cpp
+    # Data entry/utility modules
+    Initial.cpp
+    Update.cpp
+    UtmRef.cpp
+    Breakout.cpp
+    Logic.cpp
+    Texture.cpp
+    # Format converters
+    ArcIdris.cpp
+    ArcRaster.cpp
+    AsdIdrisi.cpp
+    Avl2Csv.cpp
+    BmpIdris.cpp
+    Crlf.cpp
+    Csv2Avl.cpp
+    DemIdris.cpp
+    DigitalGlobe.cpp
+    Dlg.cpp
+    DxfIdris.cpp
+    EcwIdris.cpp
+    EnviIdris.cpp
+    ErdIdris.cpp
+    ErmIdris.cpp
+    GacpIdrisi.cpp
+    GenericRaster.cpp
+    GeoEye.cpp
+    GeoTiff.cpp
+    GpcIdrisi.cpp
+    GrassIdr.cpp
+    HdfEos.cpp
+    IdrisiConv.cpp
+    Ikonos.cpp
+    JpgIdris.cpp
+    KmlIdris.cpp
+    Landsat.cpp
+    MifIdris.cpp
+    ModisConv.cpp
+    ModisQc.cpp
+    NanFix.cpp
+    Ndvi3g.cpp
+    NetCdf.cpp
+    PsdIdrisi.cpp
+    QuickBird.cpp
+    Radarsat.cpp
+    SacIdris.cpp
+    Sdts.cpp
+    Sentinel.cpp
+    ShapeIdr.cpp
+    SplusIdris.cpp
+    Spot.cpp
+    SrfIdris.cpp
+    SstIdris.cpp
+    StatIdris.cpp
+    Var2Fix.cpp
+    Vxp.cpp
+    WorldView.cpp
+    XyzIdris.cpp
+    XyzMonthly.cpp
+    # Vector conversion
+    LinToPnt.cpp
+    Poly2Line.cpp
+    RasterVector.cpp
+    # UI/system modules
+    CollectionEditor.cpp
+    CreateTsf.cpp
+    DbWorkshop.cpp
+    Display.cpp
+    EditModule.cpp
+    FlyThrough.cpp
+    MacroModeler.cpp
+    MediaViewer.cpp
+    PhotoLayer.cpp
+    PythonModule.cpp
+    RunMacro.cpp
+    Sdm2.cpp
+    SymbolWorkshop.cpp
+    VField.cpp
 )
 
 target_link_libraries(aplaceholder_gis PUBLIC

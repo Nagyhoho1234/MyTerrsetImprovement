@@ -109,6 +109,23 @@ public:
         }
 
         outFile.close();
+
+        // Build chart result
+        ChartResult chart;
+        chart.type = ChartResult::Histogram;
+        chart.title = "Frequency Histogram";
+        chart.xLabel = "Value";
+        chart.yLabel = "Count";
+        ChartSeries s;
+        s.label = "Frequency";
+        for (int b = 0; b < numBins; ++b) {
+            double binCenter = minVal + (b + 0.5) * binWidth;
+            s.x.push_back(binCenter);
+            s.y.push_back(static_cast<double>(counts[b]));
+        }
+        chart.series.push_back(s);
+        setChartResult(chart);
+
         reportProgress(1.0, "Complete");
         return true;
     }

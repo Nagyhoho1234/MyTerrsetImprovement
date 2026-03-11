@@ -324,6 +324,49 @@ public:
 
         out.close();
 
+        // Build Line chart showing spectral signature profiles for all classes
+        {
+            ChartResult chart;
+            chart.type = ChartResult::Line;
+            chart.title = "Spectral Signature Profiles";
+            chart.xLabel = "Band";
+            chart.yLabel = "Mean Value";
+
+            // Predefined colors for distinguishing classes
+            std::vector<ChartColor> colors = {
+                ChartColor(31, 119, 180), ChartColor(255, 127, 14), ChartColor(44, 160, 44),
+                ChartColor(214, 39, 40), ChartColor(148, 103, 189), ChartColor(140, 86, 75),
+                ChartColor(227, 119, 194), ChartColor(127, 127, 127), ChartColor(188, 189, 34),
+                ChartColor(23, 190, 207)
+            };
+
+            int colorIdx = 0;
+            for (const auto& sig : classes1) {
+                ChartSeries series;
+                series.label = QString("File1 Class %1").arg(sig.classId);
+                series.color = colors[colorIdx % colors.size()];
+                for (int b = 0; b < n; ++b) {
+                    series.x.push_back(b + 1);
+                    series.y.push_back(sig.mean[b]);
+                }
+                chart.series.push_back(std::move(series));
+                colorIdx++;
+            }
+            for (const auto& sig : classes2) {
+                ChartSeries series;
+                series.label = QString("File2 Class %1").arg(sig.classId);
+                series.color = colors[colorIdx % colors.size()];
+                for (int b = 0; b < n; ++b) {
+                    series.x.push_back(b + 1);
+                    series.y.push_back(sig.mean[b]);
+                }
+                chart.series.push_back(std::move(series));
+                colorIdx++;
+            }
+
+            setChartResult(std::move(chart));
+        }
+
         reportProgress(1.0, QString("Comparison report written: %1 class pairs evaluated.")
                        .arg(totalPairs));
         return true;

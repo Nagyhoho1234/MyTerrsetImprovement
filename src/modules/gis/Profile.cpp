@@ -95,6 +95,34 @@ public:
         }
 
         outFile.close();
+
+        // Build chart result — re-read the sampled values for the chart
+        ChartResult chart;
+        chart.type = ChartResult::Line;
+        chart.title = "Profile Transect";
+        chart.xLabel = "Distance";
+        chart.yLabel = "Value";
+        ChartSeries s;
+        s.label = "Transect";
+        for (int sp = 0; sp < numSamples; ++sp) {
+            double xp = startX + sp * dx;
+            double yp = startY + sp * dy;
+            double dist = sp * pixelSize;
+            if (sp == numSamples - 1) dist = lineLen;
+
+            int colP, rowP;
+            raster->xyToColRow(xp, yp, colP, rowP);
+            if (colP >= 0 && colP < raster->cols() && rowP >= 0 && rowP < raster->rows()) {
+                double val = raster->value(colP, rowP);
+                if (!(hasND && val == noData)) {
+                    s.x.push_back(dist);
+                    s.y.push_back(val);
+                }
+            }
+        }
+        chart.series.push_back(s);
+        setChartResult(chart);
+
         reportProgress(1.0, "Complete");
         return true;
     }

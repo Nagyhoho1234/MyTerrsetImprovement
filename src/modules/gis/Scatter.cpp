@@ -100,6 +100,22 @@ public:
 
         outFile.close();
 
+        // Build chart result
+        ChartResult chart;
+        chart.type = ChartResult::Scatter;
+        chart.title = "Scatter Plot";
+        chart.xLabel = "Input 1";
+        chart.yLabel = "Input 2";
+        ChartSeries s;
+        s.label = "Sampled Points";
+        for (int64_t idx = 0; idx < sampleSize; ++idx) {
+            int64_t i = validIndices[idx];
+            s.x.push_back(d1[i]);
+            s.y.push_back(d2[i]);
+        }
+        chart.series.push_back(s);
+        setChartResult(chart);
+
         reportProgress(1.0,
             QString("Scatter data exported: %1 points from %2 valid pixels")
                 .arg(sampleSize)

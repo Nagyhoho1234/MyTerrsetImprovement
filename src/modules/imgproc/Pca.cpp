@@ -220,6 +220,32 @@ public:
             reportProgress(0.5 + 0.4 * (comp + 1.0) / numComp);
         }
 
+        // Build scree plot chart: eigenvalues (sorted descending) per component
+        {
+            double totalVariance = 0.0;
+            for (int i = 0; i < n; ++i)
+                totalVariance += eigenvalues[order[i]];
+
+            ChartResult chart;
+            chart.type = ChartResult::Line;
+            chart.title = "PCA Scree Plot";
+            chart.xLabel = "Component";
+            chart.yLabel = "% Variance Explained";
+
+            ChartSeries series;
+            series.label = "Variance Explained";
+            series.color = ChartColor(0, 0, 255);
+            for (int i = 0; i < n; ++i) {
+                series.x.push_back(i + 1);
+                double pct = (totalVariance > 0.0)
+                    ? eigenvalues[order[i]] / totalVariance * 100.0
+                    : 0.0;
+                series.y.push_back(pct);
+            }
+            chart.series.push_back(std::move(series));
+            setChartResult(std::move(chart));
+        }
+
         reportProgress(1.0, "Writing output...");
         return GdalIO::write(output, parameter("output").toString());
     }

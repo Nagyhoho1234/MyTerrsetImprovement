@@ -166,6 +166,31 @@ public:
             tableMsg += "\n";
         }
 
+        // Build bar chart of category combination counts
+        ChartResult chart;
+        chart.type = ChartResult::Bar;
+        chart.title = QString("Cross-tabulation Counts (Chi² = %1, V = %2)")
+                      .arg(chiSquare, 0, 'f', 2).arg(cramersV, 0, 'f', 4);
+        chart.xLabel = "Category Combination";
+        chart.yLabel = "Count";
+        ChartSeries s;
+        s.label = "Frequency";
+        int barIdx = 0;
+        for (int c1 : classes1) {
+            for (int c2 : classes2) {
+                auto it = freqTable.find({c1, c2});
+                if (it != freqTable.end() && it->second > 0) {
+                    s.x.push_back(static_cast<double>(barIdx));
+                    s.y.push_back(static_cast<double>(it->second));
+                    chart.categoryLabels.push_back(
+                        QString("%1x%2").arg(c1).arg(c2));
+                    barIdx++;
+                }
+            }
+        }
+        chart.series.push_back(s);
+        setChartResult(chart);
+
         reportProgress(1.0, statsMsg + "\n" + tableMsg);
         return GdalIO::write(output, parameter("output").toString());
     }

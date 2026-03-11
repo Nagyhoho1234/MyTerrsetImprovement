@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
-project(APlaceholder
-    VERSION 2026.1.0
+project(MyTerrsetImprovement
+    VERSION 0.2.0
     DESCRIPTION "Open-source raster GIS and remote sensing analysis suite"
     LANGUAGES CXX
 )
@@ -45,7 +45,7 @@ endif()
 include(packaging/deploy_windows.cmake)
 
 # -- Install the main executable -----------------------------------------------
-install(TARGETS aplaceholder
+install(TARGETS MyTerrsetImprovement
     RUNTIME DESTINATION bin
     COMPONENT Runtime
 )
@@ -55,7 +55,7 @@ install(TARGETS aplaceholder
 # that runs windeployqt at install time, copying Qt DLLs, plugins, and
 # translations into the install prefix.
 qt_generate_deploy_app_script(
-    TARGET aplaceholder
+    TARGET MyTerrsetImprovement
     OUTPUT_SCRIPT QT_DEPLOY_SCRIPT
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
@@ -65,35 +65,35 @@ install(SCRIPT ${QT_DEPLOY_SCRIPT} COMPONENT Runtime)
 deploy_gdal_runtime("bin" "share")
 
 # -- Runtime DLL collection (GDAL, SQLite, proj, etc. from vcpkg) --------------
-deploy_runtime_dependencies(aplaceholder "bin")
+deploy_runtime_dependencies(MyTerrsetImprovement "bin")
 
 # -- CPack metadata ------------------------------------------------------------
-set(CPACK_PACKAGE_NAME "APlaceholder")
+set(CPACK_PACKAGE_NAME "MyTerrsetImprovement")
 set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_DESCRIPTION}")
-set(CPACK_PACKAGE_VENDOR "APlaceholder Contributors")
-set(CPACK_PACKAGE_CONTACT "https://github.com/aplaceholder/aplaceholder")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "APlaceholder")
+set(CPACK_PACKAGE_VENDOR "MyTerrsetImprovement Contributors")
+set(CPACK_PACKAGE_CONTACT "https://github.com/MyTerrsetImprovement/MyTerrsetImprovement")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "MyTerrsetImprovement")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 
 # -- NSIS-specific settings ----------------------------------------------------
 set(CPACK_GENERATOR "NSIS")
-set(CPACK_NSIS_DISPLAY_NAME "APlaceholder ${PROJECT_VERSION}")
-set(CPACK_NSIS_PACKAGE_NAME "APlaceholder")
+set(CPACK_NSIS_DISPLAY_NAME "MyTerrsetImprovement ${PROJECT_VERSION}")
+set(CPACK_NSIS_PACKAGE_NAME "MyTerrsetImprovement")
 set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
 
-# Default install directory: C:\Program Files\APlaceholder
-set(CPACK_NSIS_INSTALL_DIRECTORY "APlaceholder")
+# Default install directory: C:\Program Files\MyTerrsetImprovement
+set(CPACK_NSIS_INSTALL_DIRECTORY "MyTerrsetImprovement")
 
 # Start Menu shortcut
 set(CPACK_NSIS_CREATE_ICONS_EXTRA
-    "CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\APlaceholder.lnk' '$INSTDIR\\\\bin\\\\aplaceholder.exe'"
+    "CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\MyTerrsetImprovement.lnk' '$INSTDIR\\\\bin\\\\MyTerrsetImprovement.exe'"
 )
 set(CPACK_NSIS_DELETE_ICONS_EXTRA
-    "Delete '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\APlaceholder.lnk'"
+    "Delete '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\MyTerrsetImprovement.lnk'"
 )
 
 # Uninstaller

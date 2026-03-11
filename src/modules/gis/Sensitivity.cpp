@@ -185,6 +185,30 @@ public:
 
         outFile.close();
 
+        // Build sensitivity line chart
+        ChartResult chart;
+        chart.type = ChartResult::Line;
+        chart.title = QString("Sensitivity Analysis (±%1%)").arg(variationPct);
+        chart.xLabel = "Input Factor";
+        chart.yLabel = "Sensitivity Index (% change)";
+        ChartSeries sPlus;
+        sPlus.label = QString("+%1%").arg(variationPct);
+        sPlus.color = ChartColor(255, 0, 0);
+        ChartSeries sMinus;
+        sMinus.label = QString("-%1%").arg(variationPct);
+        sMinus.color = ChartColor(0, 0, 255);
+        for (int i = 0; i < numInputs; ++i) {
+            sPlus.x.push_back(static_cast<double>(i + 1));
+            sPlus.y.push_back(results[i].plusChange);
+            sMinus.x.push_back(static_cast<double>(i + 1));
+            sMinus.y.push_back(results[i].minusChange);
+            chart.categoryLabels.push_back(
+                QString("Input %1").arg(i + 1));
+        }
+        chart.series.push_back(sPlus);
+        chart.series.push_back(sMinus);
+        setChartResult(chart);
+
         reportProgress(1.0, QString("Sensitivity analysis complete for %1 inputs").arg(numInputs));
 
         return true;
