@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "MyTerrsetImprovement: Open-Source 64-bit Raster GIS and Remote Sensing Suite"
+type: software
+version: 0.1.0-beta
+date-released: "2026-03-11"
+license: MIT
+repository-code: "https://github.com/Nagyhoho1234/MyTerrsetImprovement"
+authors:
+  - family-names: "Feher"
+    given-names: "Zsolt"
+    affiliation: "University of Debrecen"
+    email: "feher.zsolt@agr.unideb.hu"
+keywords:
+  - GIS
+  - remote sensing
+  - raster analysis
+  - TerrSet
+  - IDRISI
+  - image classification
+  - land change modeling
+  - GDAL
+  - geospatial
+abstract: >-
+  An open-source, 64-bit raster GIS and remote sensing analysis suite
+  inspired by TerrSet/IDRISI (Clark Labs, Clark University). Features
+  205 analytical modules covering GIS analysis, image processing,
+  land change modeling, earth trends analysis, habitat and biodiversity
+  modeling, ecosystem services, and climate change adaptation. Built
+  with C++20, Qt 6, GDAL, and SQLite. This project is not affiliated
+  with or endorsed by Clark Labs.
+references:
+  - type: software
+    title: "TerrSet (formerly IDRISI)"
+    authors:
+      - family-names: "Eastman"
+        given-names: "J. Ronald"
+        affiliation: "Clark Labs, Clark University"
+    url: "https://clarklabs.org/terrset/"
+    notes: >-
+      The analytical methods, module designs, and workflow patterns
+      in MyTerrsetImprovement are inspired by TerrSet/IDRISI.

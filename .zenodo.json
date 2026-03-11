@@ -1,0 +1,47 @@
+{
+  "title": "MyTerrsetImprovement: Open-Source 64-bit Raster GIS and Remote Sensing Suite",
+  "description": "An open-source, 64-bit raster GIS and remote sensing analysis suite inspired by TerrSet/IDRISI (Clark Labs, Clark University). Features 205 analytical modules covering GIS analysis, image processing, land change modeling, earth trends analysis, habitat and biodiversity modeling, ecosystem services, and climate change adaptation. Built with C++20, Qt 6, GDAL, and SQLite.",
+  "upload_type": "software",
+  "license": {
+    "id": "MIT"
+  },
+  "creators": [
+    {
+      "name": "Feher, Zsolt",
+      "affiliation": "University of Debrecen",
+      "orcid": ""
+    }
+  ],
+  "keywords": [
+    "GIS",
+    "remote sensing",
+    "raster analysis",
+    "TerrSet",
+    "IDRISI",
+    "image classification",
+    "land change modeling",
+    "earth trends",
+    "GDAL",
+    "geospatial",
+    "64-bit",
+    "C++",
+    "Qt"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Nagyhoho1234/MyTerrsetImprovement",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://clarklabs.org/terrset/",
+      "relation": "isNewVersionOf",
+      "scheme": "url"
+    }
+  ],
+  "references": [
+    "Eastman, J.R. (2020). TerrSet Manual. Clark Labs, Clark University.",
+    "Eastman, J.R. (2020). TerrSet Tutorial. Clark Labs, Clark University."
+  ],
+  "notes": "This project is inspired by and built as an improvement upon TerrSet/IDRISI by Clark Labs (Clark University). It is not affiliated with, endorsed by, or a replacement for TerrSet. The analytical methods and module designs originate from the TerrSet software suite. BETA release."
+}
